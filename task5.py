@@ -11,9 +11,13 @@ class Node:
         self.color = color
         self.id = str(uuid.uuid4())
 
-def generate_color(step, total_steps):
+def generate_color_bfs(step, total_steps):
     """Генерує колір від темного до світлого відтінку."""
-    intensity = 255 - int((step / total_steps) * 255)
+    intensity = 0 + total_steps * 26
+    return f'#{intensity:02X}{intensity:02X}FF'  # Відтінки синього
+def generate_color_dfs(step, total_steps):
+    """Генерує колір від темного до світлого відтінку."""
+    intensity = 0 + int((step / total_steps) * 255)
     return f'#{intensity:02X}{intensity:02X}FF'  # Відтінки синього
 
 def dfs(node, action, step=0, total_steps=0):
@@ -37,9 +41,13 @@ def bfs(root, action):
             queue.append((node.left, step + 1))
             queue.append((node.right, step + 1))
 
-def colorize_node(node, step, total_steps):
-    """Змінює колір вузла."""
-    node.color = generate_color(step, total_steps)
+def colorize_node_bfs(node, step, total_steps):
+    """Змінює колір вузла в BFS."""
+    node.color = generate_color_bfs(step, total_steps)
+
+def colorize_node_dfs(node, step, total_steps):
+    """Змінює колір вузла в DFS."""
+    node.color = generate_color_dfs(step, total_steps)
 
 def add_edges(graph, node, pos, x=0, y=0, layer=1):
     if node is not None:
@@ -77,9 +85,9 @@ root.right = Node(1)
 root.right.left = Node(3)
 
 # Використання
-# total_steps = dfs(root, lambda node, step, total_steps: None)  # Підрахунок кількості кроків
-# dfs(root, colorize_node, total_steps=total_steps)  # DFS з зміною кольору
-bfs(root, colorize_node)  # BFS з зміною кольору
+total_steps = dfs(root, lambda node, step, total_steps: None)  # Підрахунок кількості кроків
+dfs(root, colorize_node_dfs, total_steps=total_steps)  # DFS з зміною кольору
+# bfs(root, colorize_node_bfs)  # BFS з зміною кольору
 
 draw_tree(root)  # Візуалізація дерева
 #print(total_steps)

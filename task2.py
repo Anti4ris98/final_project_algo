@@ -22,7 +22,11 @@ def main():
     turtle.up()
     turtle.goto(0, -100)  # Початкова позиція нижче, щоб дерево помістилося
     turtle.down()
-    recursion_level = 7
+
+
+    recursion_level = int(input("Введіть кількість рекурсій: "))  #<<<< Сюди вводити кількість рекурсій
+
+
     draw_tree(turtle, 50, recursion_level)
     turtle.done()
 

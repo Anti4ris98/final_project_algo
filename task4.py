@@ -1,6 +1,7 @@
 import uuid
 import networkx as nx
 import matplotlib.pyplot as plt
+import heapq
 
 class Node:
     def __init__(self, key, color="skyblue"):
@@ -37,18 +38,38 @@ def draw_tree(tree_root):
     nx.draw(tree, pos=pos, labels=labels, arrows=False, node_size=2500, node_color=colors)
     plt.show()
 
+def build_heap_tree(heap_array):
+    """
+    Функція для побудови бінарного дерева з масиву бінарної купи.
+    :param heap_array: Масив, що представляє бінарну купу.
+    :return: Корінь бінарного дерева.
+    """
+    # Функція для створення вузла дерева з індексу в масиві купи
+    def create_node_from_heap(index):
+        if index < len(heap_array):
+            node = Node(heap_array[index])
+            node.left = create_node_from_heap(2 * index + 1)
+            node.right = create_node_from_heap(2 * index + 2)
+            return node
+        return None
+
+    # Створення кореня дерева, починаючи з індексу 0
+    return create_node_from_heap(0)
+
 # Створення дерева
-# root = Node(0)
-# root.left = Node(4)
-# root.left.left = Node(5)
-# root.left.right = Node(10)
-# root.right = Node(1)
-# root.right.left = Node(3)
-# draw_tree(root) #Відображення дерева з прикладу коду
+root = Node(0)
+root.left = Node(4)
+root.left.left = Node(5)
+root.left.right = Node(10)
+root.right = Node(1)
+root.right.left = Node(3)
+draw_tree(root) #Відображення дерева з прикладу коду
 
 # Створення бінарної купи (приклад)
-root2 = Node(1)
-root2.left = Node(3)
-root2.right = Node(2)
-root2.left.left = Node(6)
-draw_tree(root2)
+    # Припустимо, що у нас є бінарна купа у вигляді масиву
+heap_array = [1, 3, 5, 7, 9, 2, 4, 34, 2, 1, 2]
+heapq.heapify(heap_array)
+    # Побудова дерева з купи
+heap_tree_root = build_heap_tree(heap_array)
+    # Відображення бінарної купи у вигляді дерева
+draw_tree(heap_tree_root)
